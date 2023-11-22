@@ -1,5 +1,4 @@
 @import url('./loader.css');
-@import url('../../node_modules/slim-select/dist/slimselect.css');
 
 body {
     display: flex;
