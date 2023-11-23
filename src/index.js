@@ -1,15 +1,31 @@
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
-import { fetchBreeds, fetchCatByBreed } from './cat-api';
+import { findImages } from './search-api';
 
-const { height: cardHeight } = document
-.querySelector(".gallery")
-.firstElementChild.getBoundingClientRect();
+// const { height: cardHeight } = document
+// .querySelector(".gallery")
+// .firstElementChild.getBoundingClientRect();
 
-window.scrollBy({
-    top: cardHeight * 2,
-    behavior: "smooth",
-});
+// window.scrollBy({
+//     top: cardHeight * 2,
+//     behavior: "smooth",
+// });
+
+
+const formElem = document.querySelector('.search-form');
+const myForm = new FormData(formElem);
+
+function onFormSubmit(evt) {
+    evt.preventDefault();
+    findImages("big black cats");
+}
+
+const btn = document.querySelector('button[type="submit"]');
+console.log(btn);
+
+btn.addEventListener('click', onFormSubmit);
+
+
 // const slimSelectSettings = {
 //     showSearch: false,
 //     placeholderText: "Select cat's breed"
