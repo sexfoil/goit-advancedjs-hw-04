@@ -21,7 +21,7 @@ let searchQuery = '';
 
 const guardOptions = {
     root: null,
-    rootMargin: "150px",
+    rootMargin: "300px",
     treshhold: 1.0
 }
 
