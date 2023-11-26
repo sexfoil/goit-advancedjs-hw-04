@@ -19,9 +19,17 @@ let totalHits = 0;
 let currentPage = 1;
 let searchQuery = '';
 
+let gallery = new SimpleLightbox(
+    '.gallery a',
+    {
+        captionsData: 'alt',
+        captionDelay: 250
+    }
+);
+    
 const guardOptions = {
     root: null,
-    rootMargin: "300px",
+    rootMargin: "200px",
     treshhold: 1.0
 }
 
@@ -79,27 +87,12 @@ function getListItemsHTML(hits) {
 
 function renderSearchResult(data) {
     elements.gallery.insertAdjacentHTML('beforeend', getListItemsHTML(data.hits));
-    let gallery = new SimpleLightbox(
-        '.gallery a',
-        {
-            captionsData: 'alt',
-            captionDelay: 250
-        }
-    );
-
-    const { height: cardHeight } = elements.gallery.firstElementChild.getBoundingClientRect();
+    gallery.refresh();
 
     window.scrollBy({
-        top: cardHeight * 2,
+        top: 0,
         behavior: "smooth",
     });
-}
-
-function resetSearchData() {
-    elements.gallery.innerHTML = '';
-    totalHits = 0;
-    currentPage = 1;
-    searchQuery = '';
 }
 
 function showErrorMessage(errorMessage) {
@@ -122,13 +115,28 @@ function showMessage(message) {
     });
 }
 
+function resetSearchData() {
+    elements.gallery.innerHTML = '';
+    totalHits = 0;
+    currentPage = 1;
+    searchQuery = '';
+}
 
 function onSearchButtonClick(evt) {
     evt.preventDefault();
+    const form = new FormData(elements.searchForm);
+    const userInput = form.get('searchQuery').trim().toLowerCase();
+
+    if (!userInput) {
+        showErrorMessage("Search query must be not empty!");
+        return;
+    }
+
+    scrollObserver.unobserve(elements.guard);    
     resetSearchData();
 
-    const form = new FormData(elements.searchForm);
-    const searchResult = findImages(form.get('searchQuery').trim().toLowerCase(), PER_PAGE);
+    searchQuery = userInput;
+    const searchResult = findImages(searchQuery, PER_PAGE);
     
     searchResult
         .then(result => {
