@@ -29,7 +29,7 @@ let gallery = new SimpleLightbox(
     
 const guardOptions = {
     root: null,
-    rootMargin: "200px",
+    rootMargin: "250px",
     treshhold: 1.0
 }
 
